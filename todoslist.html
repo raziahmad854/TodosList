@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container my-4">
+        <h2 class="text-center">ToDos List</h2>
+
+
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">Add an item to the list.</div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="Description" class="form-label">Description</label>
+            <textarea class="form-control" id="Description" rows="3"></textarea>
+        </div>
+
+        <button type="submit" id="add" class="btn btn-primary">Add</button>
+
+        <div class="items my-4">
+            <h2>Your Items <span>
+                    <!-- Add a button to clear the local storage -->
+                    <button id="clearLocalStorageButton" class="btn btn-danger">Clear</button>
+                </span></h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Sno.</th>
+                        <th scope="col">Item Title</th>
+                        <th scope="col">Item Description</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="itemsTableBody">
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>get some coffee</td>
+                        <td>because you are feeling sleepy</td>
+                        <td><button class="btn btn-sm btn-primary">Delete</button></td>
+
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+    <script>
+        // Retrieve items data from local storage when the page loads
+        document.addEventListener("DOMContentLoaded", () => {
+            // Get the stored items from local storage or use an empty array if none exist
+            const storedItems = JSON.parse(localStorage.getItem("todos")) || [];
+
+            // Get a reference to the table body where the items will be displayed
+            const itemsTableBody = document.getElementById("itemsTableBody");
+            // Clear the existing rows in the table body
+            itemsTableBody.innerHTML = "";
+
+            // Loop through each stored item and create a row for each of them
+            storedItems.forEach((item, index) => {
+                // Create a new table row element to hold the item data
+                const newRow = document.createElement("tr");
+
+                // Populate the new row with the item data using a template literal
+                newRow.innerHTML = `
+              <th scope="row">${index + 1}</th>
+              <td>${item.title}</td>
+              <td>${item.description}</td>
+              <td><button class="btn btn-sm btn-primary">Delete</button></td>
+            `;
+
+                // Append the new row to the table body
+                itemsTableBody.appendChild(newRow);
+            });
+        });
+
+        // Get a reference to the "Add" button and add a click event listener to it
+        const addButton = document.getElementById("add");
+        addButton.addEventListener("click", () => {
+            // Get references to the input fields and the table body
+            const titleInput = document.getElementById("title");
+            const descriptionInput = document.getElementById("Description");
+            const itemsTableBody = document.getElementById("itemsTableBody");
+
+            // Get the values entered by the user in the input fields
+            const titleValue = titleInput.value;
+            const descriptionValue = descriptionInput.value;
+
+            // Create a new table row and cells for the new item
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+            <th scope="row">${itemsTableBody.children.length + 1}</th>
+            <td>${titleValue}</td>
+            <td>${descriptionValue}</td>
+            <td><button class="btn btn-sm btn-primary">Delete</button></td>
+          `;
+
+            // Append the new row to the table body
+            itemsTableBody.appendChild(newRow);
+
+            // Clear the input fields after adding the item
+            titleInput.value = "";
+            descriptionInput.value = "";
+
+            // Save the updated table data to local storage
+            const storedItems = Array.from(itemsTableBody.children).map((row) => {
+                const title = row.children[1].textContent;
+                const description = row.children[2].textContent;
+                return { title, description };
+            });
+            localStorage.setItem("todos", JSON.stringify(storedItems));
+        });
+
+        const clearLocalStorageButton = document.getElementById("clearLocalStorageButton");
+        clearLocalStorageButton.addEventListener("click", () => {
+            // Clear the local storage
+            localStorage.clear();
+
+            // After clearing the local storage, reload the page to reset the table to its initial state
+            window.location.reload();
+        })
+    </script>
+
+</body>
+
+</html>
