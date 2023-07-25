@@ -124,6 +124,34 @@
             localStorage.setItem("todos", JSON.stringify(storedItems));
         });
 
+         // Function to handle row deletion
+    function deleteRow(button) {
+        // Get the parent row element (<tr>) of the button
+        const rowToDelete = button.parentElement.parentElement;
+
+        // Get a reference to the table body
+        const itemsTableBody = document.getElementById("itemsTableBody");
+
+        // Remove the row from the table
+        itemsTableBody.removeChild(rowToDelete);
+
+        // Update the serial numbers (Sno.) for the remaining rows
+        const rows = itemsTableBody.getElementsByTagName("tr");
+        for (let i = 0; i < rows.length; i++) {
+            rows[i].getElementsByTagName("th")[0].textContent = i + 1;
+        }
+
+        // Save the updated table data to local storage
+        const storedItems = Array.from(itemsTableBody.children).map((row) => {
+            const title = row.children[1].textContent;
+            const description = row.children[2].textContent;
+            return { title, description };
+        });
+        localStorage.setItem("todos", JSON.stringify(storedItems));
+        window.location.reload();
+    }
+    
+
         const clearLocalStorageButton = document.getElementById("clearLocalStorageButton");
         clearLocalStorageButton.addEventListener("click", () => {
             // Clear the local storage
