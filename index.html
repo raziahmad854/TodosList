@@ -46,7 +46,7 @@
                         <th scope="row">1</th>
                         <td>get some coffee</td>
                         <td>because you are feeling sleepy</td>
-                        <td><button class="btn btn-sm btn-primary">Delete</button></td>
+                        <td><button class="btn btn-primary">Delete</button></td>
 
                     </tr>
 
@@ -81,7 +81,7 @@
             <th scope="row">${index + 1}</th>
             <td>${item.title}</td>
             <td>${item.description}</td>
-            <td><button class="btn-primary">Delete</button></td>
+            <td><button class="btn btn-primary">Delete</button></td>
         `;
 
         // Append the new row to the table body
@@ -89,7 +89,7 @@
     });
     
     // Get a reference to the "Delete" buttons and assign the deleteRow function to them
-    const deleteButtons = itemsTableBody.getElementsByClassName("btn-primary");
+    const deleteButtons = itemsTableBody.getElementsByClassName("btn btn-primary");
     for (let i = 0; i < deleteButtons.length; i++) {
         deleteButtons[i].addEventListener("click", function () {
             deleteRow(this);
@@ -115,7 +115,7 @@
         <th scope="row">${itemsTableBody.children.length + 1}</th>
         <td>${titleValue}</td>
         <td>${descriptionValue}</td>
-        <td><button class="btn-primary">Delete</button></td>
+        <td><button class="btn btn-primary">Delete</button></td>
       `;
 
         // Append the new row to the table body
@@ -134,7 +134,7 @@
         localStorage.setItem("todos", JSON.stringify(storedItems));
 
         // Get a reference to the "Delete" buttons and assign the deleteRow function to them
-        const deleteButtons = itemsTableBody.getElementsByClassName("btn-primary");
+        const deleteButtons = itemsTableBody.getElementsByClassName("btn btn-primary");
         for (let i = 0; i < deleteButtons.length; i++) {
             deleteButtons[i].addEventListener("click", function () {
                 deleteRow(this);
